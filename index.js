@@ -1,19 +1,39 @@
-let firstCard = Math.floor(Math.random() * 11) + 1
-let secondCard = Math.floor(Math.random() * 11) + 1
-let hand = [firstCard, secondCard]
-let nextCard = 0
-let sum = firstCard + secondCard 
+let hand = []
+let sum = 0 
 let hasBlackjack = false
-let isAlive = true
+let isAlive = false
 let message = ""
 let messageEl = document.getElementById("message-el")
 let sumEl = document.getElementById("sum-el")
 let cardsEl = document.getElementById("cards-el")
+let playerEl =  document.getElementById("player-el")
 
-messageEl.textContent
+let player = {
+    name: "Sean",
+    chips: 200
+}
+
+playerEl.textContent = player.name + ": $" + player.chips
 
 function startGame() {
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    hand = [firstCard, secondCard]
+    sum = firstCard + secondCard 
+    isAlive = true
     renderGame()
+}
+
+function getRandomCard() {
+    let i = Math.floor(Math.random() * 13) + 1
+    //Checks the rank of the card, if 1 then it's an Ace so is worth 11, if 11, 12 or 13 then it's Ace, King or Queen worth 10
+    if (i === 1) {
+        return 11
+    } else if (i >=11) {
+        return 10
+    } else {
+        return i
+    }
 }
 
 function renderGame() {
@@ -35,8 +55,10 @@ function renderGame() {
 }
 
 function newCard() {
-    nextCard = Math.floor(Math.random() * 11) + 1
-    sum += nextCard
-    hand.push(nextCard)
-    renderGame()
+    if (hasBlackjack === false && isAlive === true) {
+        let nextCard = getRandomCard()
+        sum += nextCard
+        hand.push(nextCard)
+        renderGame()
+    }
 }
